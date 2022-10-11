@@ -13,7 +13,7 @@ void _Merge(int *A, int *B, int left, int right, int mid) {
         else B[iMerged++] = A[iLeft++];
     }
 
-    CopyArray(A, B, left, right);
+    CopyArray(B, A, left, right);
 }
 
 void _MergeSort(int *A, int *B, int left, int right) {
