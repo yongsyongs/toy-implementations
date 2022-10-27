@@ -1,5 +1,4 @@
 #include <iostream>
-#include <queue>
 #include "utils.h"
 
 void CountingSort(int *A, int N, int K) {
