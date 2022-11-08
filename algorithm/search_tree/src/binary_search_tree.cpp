@@ -184,7 +184,7 @@ int main() {
     TestSearch(tree, keyList, sizeof(keyList) / sizeof(int));
     cout << endl;
 
-    // Delete
+    // Test Delete
     TestDelete(tree, 21, keyList, sizeof(keyList) / sizeof(int));
     cout << endl;
     TestDelete(tree, 30, keyList, sizeof(keyList) / sizeof(int));
