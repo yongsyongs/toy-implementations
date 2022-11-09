@@ -6,7 +6,9 @@ using namespace std;
 class BinarySearchTree {
     private:
     Node* rootNode = nullptr;
+    Node* iterNode = nullptr;
     uint len = 0;
+    int iterIdx = 0;
 
     Node* _search(Node* node, int key) {
         if(node == nullptr || node->key == key) return node;
@@ -60,14 +62,17 @@ class BinarySearchTree {
     }
     ~BinarySearchTree() { }
 
-    Node* GetRoot() {
+// { getters
+    Node* root() {
         return this->rootNode;
     }
     
     int length() {
         return len;
     }
+// }
 
+// { basics
     bool Search(int key) {
         Node* res = _search(this->rootNode, key);
         return res != nullptr;
@@ -119,51 +124,66 @@ class BinarySearchTree {
         len--;
         return true;
     }
+// }
+
+// { functions
+Node* IterDFS() {
+    if(iterIdx >= length()) iterIdx = 0;
+    if(iterIdx == 0) iterNode = rootNode;
+    else iterNode = DFSStep(iterNode);
+    iterIdx++;
+    return iterNode;
+}
+//}
 };
 
 
 void PrintTree(BinarySearchTree* tree) {
-    Node* currNode = tree->GetRoot();
+    cout << "Print Tree" << endl;
     for(int i = 0; i < tree->length(); i++) {
+        Node* node = tree->IterDFS();
         printf(
-            "curr: %d --> left: %d --> right: %d\n", 
-            currNode->key, 
-            (currNode->left != nullptr) ? currNode->left->key : -1,
-            (currNode->right != nullptr) ? currNode->right->key : -1
+            "\tcurr: %d --> left: %d --> right: %d\n", 
+            node->key, 
+            (node->left != nullptr) ? node->left->key : -1,
+            (node->right != nullptr) ? node->right->key : -1
         );
-        currNode = DFSStep(currNode);
     }
 }
 
 void TestSearch(BinarySearchTree* tree, int* keyList, int N) {
     cout << "------------------------------------------------------------------" << endl;
-    cout << "Test Search\nReults)" << endl;
+    cout << "Test Search" << endl;
 
-    Node* currNode = tree->GetRoot();
     for(int i = 0; i < tree->length(); i++) {
-        Node* node;
+        Node* currNode = tree->IterDFS();
+        Node* searchResult;
         int key = currNode->key;
-        bool ret = tree->Search(key, node);
+        bool ret = tree->Search(key, searchResult);
         if(ret) {
             printf(
-                "SUCCESS curr: %d --> left: %d --> right: %d\n", 
+                "\tSUCCESS curr: %d --> left: %d --> right: %d\n", 
                 currNode->key, 
                 (currNode->left != nullptr) ? currNode->left->key : -1,
                 (currNode->right != nullptr) ? currNode->right->key : -1
             );
         }
         else cout << "FAIL " << key << endl;
-        currNode = DFSStep(currNode);
     }
     cout << "------------------------------------------------------------------" << endl;
 }
 
 void TestDelete(BinarySearchTree* tree, int key, int* keyList, int N) {
     cout << "------------------------------------------------------------------" << endl;
-    printf("Test Delete -> %d\nReults)\n", key);
+    cout << "Test Delete" << endl;
 
     Node result;
     tree->Delete(key, result);
+    printf(
+        "Call Delete(%d) --> %s\n", 
+        key, 
+        (key == result.key) ? "SUCCESS" : "FAIL"
+    );
     PrintTree(tree);
     cout << "------------------------------------------------------------------" << endl;
 }
